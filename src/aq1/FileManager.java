@@ -2,6 +2,7 @@ package aq1;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
@@ -18,15 +20,15 @@ import javafx.stage.Stage;
 
 public class FileManager {
 
-    static Gson gson = new Gson();
+    Gson gson = new Gson();
 
-    public static void saveList(List<Question> list, Parent root) throws IOException {
+    public void saveList(List<Question> list) throws IOException {
 
         FileChooser fileChooser = new FileChooser();
 
         Stage saveStage = new Stage();
         saveStage.setTitle("Spara lista...");
-        saveStage.setScene(new Scene(root, 450, 450));
+//        saveStage.setScene(new Scene(root, 450, 450));
 
         //Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("json (*.json)", "*.json");
@@ -51,39 +53,65 @@ public class FileManager {
         }
     }
 
-    public static ArrayList loadList(Parent root) {
-
-        FileChooser fileChooser = new FileChooser();
-
-        Stage loadStage = new Stage();
-        loadStage.setTitle("Ladda lista...");
-        loadStage.setScene(new Scene(root, 450, 450));
-
-        //Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("json (*.json)", "*.json");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        File file = fileChooser.showOpenDialog(loadStage);
-
-        gson = new Gson();
-        ArrayList<Question> loadedList = null;
-
+    public ArrayList<Question> loadList() {
+        ArrayList<Question> loadedList;
+        File loadedFile = getListFile();
         Type questionListType = new TypeToken<ArrayList<Question>>() {
         }.getType();
 
         //Read the File
         try {
             FileReader fileReader;
-            fileReader = new FileReader(file);
+            fileReader = new FileReader(loadedFile);
             loadedList = gson.fromJson(fileReader, questionListType);
-            AQAlert.Alert("Lyckad laddning", "Hämtade " + file.getName() + " från " + file.getAbsolutePath());
+            AQAlert.Alert("Lyckad laddning", "Hämtade " + loadedFile.getName() + " från " + loadedFile.getAbsolutePath());
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             Logger.getLogger(Main.class
                     .getName()).log(Level.SEVERE, null, e);
+            return null;
         }
 
         return loadedList;
+    }
+
+//    public String getAbsoluteFilePath(String extType, String fileExtension) {
+//        newStage = new Stage();
+//        FileChooser fileChooser = new FileChooser();
+//        fileChooser.setTitle("Bläddra...");
+//        fileChooser.getExtensionFilters().addAll(
+//                new FileChooser.ExtensionFilter(extType, fileExtension)
+//        );
+//        File selectedFile = fileChooser.showOpenDialog(newStage);
+//        if (selectedFile != null) {
+//            System.out.println("Selected file: " + selectedFile);
+//            String path = selectedFile.getAbsolutePath();
+//            return path;
+//        } else {
+//            return null;
+//        }
+//    }
+
+    private File getListFile() {
+        Stage newStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Bläddra...");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Lista", "*.json")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(newStage);
+        if (selectedFile != null) {
+            System.out.println("Selected file: " + selectedFile);
+            String path = selectedFile.getAbsolutePath();
+            return selectedFile;
+        } else {
+            return null;
+        }
+    }
+
+    private void saveListFile(List<Question> listToSave){
+
     }
 
 }

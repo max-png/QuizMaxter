@@ -2,6 +2,7 @@ package aq1;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -206,9 +207,7 @@ public class Controller implements Initializable {
 ////        //Initialize a listener to the listview.
         ObservableList<String> data = FXCollections.observableArrayList();
 
-        questionsArray.forEach((nextQuestion) -> {
-            data.add(nextQuestion.toString());
-        });
+        questionsArray.forEach((nextQuestion) -> data.add(nextQuestion.toString()));
 
         questionsList.setItems(data);
 
@@ -308,8 +307,7 @@ public class Controller implements Initializable {
 
     @FXML
     private File selectQuestionSound() {
-        File sound = new Sound().loadSound("Fråga " + questionsArray.size());
-        return sound;
+        return new Sound().loadSound("Fråga " + questionsArray.size());
     }
 
     //TODO Clean up the code with method calls
@@ -362,9 +360,7 @@ public class Controller implements Initializable {
 
         try {
             int getPointValue = Integer.parseInt(pointValue.getText());
-
             boolean isPenalty = penaltyYes.isSelected();
-
             Question newQuestion = new Question(getTextValue, getPointValue, isPenalty, null);
 
             questionTextArea.clear();
@@ -380,7 +376,7 @@ public class Controller implements Initializable {
         questionTextArea.clear();
     }
 
-    //TODO Flyttade denna och questionsList + questionsArray till QUestionHandler
+    //TODO Flyttade denna och questionsList + questionsArray till QuestionHandler
     private void removeQuestion(ActionEvent event) {
         questionTextArea.clear();
         final int selectedIdx = questionsList.getSelectionModel().getSelectedIndex();
@@ -434,21 +430,27 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private void loadListFired(ActionEvent event) throws IOException {
-        if (questionsArray != null) {
-            AQAlert.Alert("Varning!", "Frågorna i listan kommer försvinna om de inte redan sparats!");
-        }
+    private void loadListFired(ActionEvent event) throws NullPointerException {
+        ArrayList<Question> loadedList = new FileManager().loadList();
+        try {
+            questionsArray.clear();
+            questionsList.getItems().clear();
 
-        ArrayList<Question> loadedList = FileManager.loadList(FXMLLoader.load(getClass().getResource("AQ1.fxml")));
-        loadedList.forEach((q) -> {
-            questionsArray.add(q);
-            questionsList.getItems().add(q.toString());
-        });
+            loadedList.forEach((q) -> {
+                questionsArray.add(q);
+                questionsList.getItems().add(q.toString());
+            });
+
+        } catch (Exception e) {
+            AQAlert.Alert("Fel", e.toString());
+        }
     }
 
     @FXML
     private void saveListFired(ActionEvent event) throws IOException {
-        FileManager.saveList(questionsArray, FXMLLoader.load(getClass().getResource("AQ1.fxml")));
+//        FileManager.saveList(questionsArray, FXMLLoader.load(getClass().getResource("AQ1.fxml")));
+        FileManager fm = new FileManager();
+        fm.saveList(questionsArray);
     }
 
     private String intToString(int i) {
@@ -456,6 +458,7 @@ public class Controller implements Initializable {
         if (i <= 0 || i >= 0) {
             parsed = String.valueOf(i);
         } else {
+            return "";
         }
         return parsed;
     }
