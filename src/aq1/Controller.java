@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import aq1.Documentation.Texts;
 import aq1.Handlers.QuestionHandler;
 import aq1.Sounds.Sound;
 import aq1.Sounds.ReplaceThisOldSoundPlayer;
@@ -20,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -33,6 +35,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class Controller implements Initializable {
 
@@ -99,17 +103,24 @@ public class Controller implements Initializable {
     private TextField p4PointsCounter;
     @FXML
     private TextArea questionTextArea;
+    @FXML
+    private Button updateQuestion;
 
     public static boolean editMode = true;
 
     //TODO Flyttade denna till QUestionHandler
 //    public static ArrayList<Question> questionsArray = new ArrayList<>();
     public static ArrayList<Question> questionsArray = QuestionHandler.getQuestionsArray();
+
 //Verkar funka att ladda
 
 //    public static SoundManager soundManager = new SoundManager();
 
     public Styler styler = new Styler();
+
+    public static File correctSound;
+    public static File wrongSound;
+
 
 //    private static int p1Points = 0;
 //    private static int p2Points = 0;
@@ -182,6 +193,16 @@ public class Controller implements Initializable {
                     p3.setDisabled(false);
                     p4.setDisabled(false);
                     break;
+
+                case S:
+                    questionsList.getSelectionModel().select(questionsList.getSelectionModel().getSelectedIndex() + 1);
+                    break;
+
+                case W:
+                    if (questionsList.getSelectionModel().getSelectedIndex() > 0) {
+                        questionsList.getSelectionModel().select(questionsList.getSelectionModel().getSelectedIndex() - 1);
+                    }
+                    break;
             }
         }
     }
@@ -253,19 +274,19 @@ public class Controller implements Initializable {
         switch (id) {
             case "p1Name":
                 p1.setName(p1Name.getText());
-                System.out.println("Spelare 1 heter nu " + p1.getName());
+                AQAlert.Alert("Namnbyte", "Spelare 1 heter nu " + p1.getName());
                 break;
             case "p2Name":
                 p2.setName(p2Name.getText());
-                System.out.println("Spelare 2 heter nu " + p2.getName());
+                AQAlert.Alert("Namnbyte", "Spelare 2 heter nu " + p2.getName());
                 break;
             case "p3Name":
                 p3.setName(p3Name.getText());
-                System.out.println("Spelare 3 heter nu " + p3.getName());
+                AQAlert.Alert("Namnbyte", "Spelare 3 heter nu " + p3.getName());
                 break;
             case "p4Name":
                 p4.setName(p4Name.getText());
-                System.out.println("Spelare 4 heter nu " + p4.getName());
+                AQAlert.Alert("Namnbyte", "Spelare 4 heter nu " + p4.getName());
                 break;
         }
 
@@ -279,6 +300,13 @@ public class Controller implements Initializable {
             editModeSelector.setText("Växla till redigeringsläge");
             questionsHBox.visibleProperty().set(false);
 //            questionTextArea.disableProperty().set(true);
+
+            updateQuestion.setVisible(false);
+
+            penaltyNo.setDisable(true);
+            penaltyYes.setDisable(true);
+
+
             questionTextArea.editableProperty().set(false);
             pointValue.editableProperty().set(false);
             p1Name.editableProperty().set(false);
@@ -300,14 +328,77 @@ public class Controller implements Initializable {
             p3Name.editableProperty().set(true);
             p4Name.editableProperty().set(true);
 
+            penaltyNo.setDisable(false);
+            penaltyYes.setDisable(false);
+
+            updateQuestion.setVisible(true);
             AQAlert.Alert("Se upp!", "Redigeringsläge aktiverat.");
 //            p1Name.getId()
         }
     }
 
     @FXML
+    private void resetGameFired() {
+        //TODO Städa upp detta.
+        questionsArray.clear();
+        Question.setCounter(1);
+        questionsList.getItems().clear();
+        questionTextArea.clear();
+        p1.setName("Spelare 1");
+        p2.setName("Spelare 2");
+        p3.setName("Spelare 3");
+        p4.setName("Spelare 4");
+        p1.setPoints(0);
+        p2.setPoints(0);
+        p3.setPoints(0);
+        p4.setPoints(0);
+        p1PointsCounter.setText(intToString(0));
+        p2PointsCounter.setText(intToString(0));
+        p3PointsCounter.setText(intToString(0));
+        p4PointsCounter.setText(intToString(0));
+
+        p1Name.setText(p1.getName());
+        p2Name.setText(p2.getName());
+        p3Name.setText(p3.getName());
+        p4Name.setText(p4.getName());
+    }
+
+    @FXML
+    private void showGuide() {
+        Stage helpStage = new Stage();
+        helpStage.setTitle("Guide");
+        helpStage.setMinHeight(680);
+        helpStage.setMinWidth(1200);
+        VBox comp = new VBox();
+        TextArea helpText = new TextArea(Texts.guideText());
+        helpText.setEditable(false);
+        helpText.setMinSize(1200, 680);
+        comp.getChildren().add(helpText);
+        comp.fillWidthProperty().setValue(true);
+        comp.setMinSize(1200, 680);
+
+        Scene stageScene = new Scene(comp, 1200, 680);
+        helpStage.setScene(stageScene);
+        helpStage.show();
+    }
+
+    @FXML
     private File selectQuestionSound() {
         return new Sound().loadSound("Fråga " + questionsArray.size());
+    }
+
+    @FXML
+    private void selectCorrectSoundFired() {
+        Sound sound = new Sound();
+        correctSound = sound.loadSound("rätt svar");
+        sound.Play(correctSound);
+    }
+
+    @FXML
+    private void selectWrongSoundFired() {
+        Sound sound = new Sound();
+        wrongSound = sound.loadSound("fel svar");
+        sound.Play(wrongSound);
     }
 
     //TODO Clean up the code with method calls
@@ -343,13 +434,14 @@ public class Controller implements Initializable {
         }
     }
 
-
     @FXML
     private void addButtonFired(ActionEvent event) {
 
+        int selectedIndex = questionsList.getSelectionModel().getSelectedIndex();
+        int size = questionsList.getItems().size();
+
         //TODO Fixa det här
         questionTextArea.commitValue();
-//        File getSoundValue = selectQuestionSound();
         String getTextValue = questionTextArea.getText();
 
         try {
@@ -361,14 +453,22 @@ public class Controller implements Initializable {
         try {
             int getPointValue = Integer.parseInt(pointValue.getText());
             boolean isPenalty = penaltyYes.isSelected();
-            Question newQuestion = new Question(getTextValue, getPointValue, isPenalty, null);
+            Question newQuestion = new Question(getTextValue, getPointValue, isPenalty);
 
+            if (selectedIndex < (size - 1) && selectedIndex != (-1)) {
+                questionsList.getItems().add(selectedIndex + 1, newQuestion.toString());
+                questionsArray.add(selectedIndex + 1, newQuestion);
+                questionsList.getSelectionModel().select(selectedIndex + 1);
+            } else {
+                questionsList.getItems().add(newQuestion.toString());
+                questionsArray.add(newQuestion);
+                questionsList.getSelectionModel().selectLast();
+            }
             questionTextArea.clear();
-            questionsArray.add(newQuestion);
-            questionsList.getItems().add(newQuestion.toString());
-        } catch (RuntimeException e) {
+
+        } catch (Exception e) {
             System.out.println("Error in addButtonFired: " + e);
-            AQAlert.ErrorAlert("Hoppsan", "Poäng får inte innehålla text! :)");
+            AQAlert.ErrorAlert("Hoppsan", e.toString());
         }
     }
 
@@ -382,13 +482,11 @@ public class Controller implements Initializable {
         final int selectedIdx = questionsList.getSelectionModel().getSelectedIndex();
 
         final int newSelectedIdx;
-        String itemToRemove = questionsList.getSelectionModel().getSelectedItem();
-        newSelectedIdx = (selectedIdx == questionsList.getItems().size() - 1) ? selectedIdx - 1 : selectedIdx;
+//        newSelectedIdx = (selectedIdx == questionsList.getItems().size() - 1) ? selectedIdx - 1 : selectedIdx;
 
         questionsArray.remove(selectedIdx);
         questionsList.getItems().remove(selectedIdx);
-        questionsList.getSelectionModel().select(newSelectedIdx);
-
+        questionsList.getSelectionModel().select(selectedIdx);
     }
 
 
@@ -415,13 +513,15 @@ public class Controller implements Initializable {
 
     @FXML
     private void addBranchFired(ActionEvent event) {
+        int insert = questionsList.getSelectionModel().getSelectedIndex() + 1;
         String text;
         text = questionTextArea.getText();
-        Question newBranch = new Question(text, 0, false, null);
+        Question newBranch = new Question(text, 0, false);
         Question.setCounter(Question.getCounter() - 1);
         newBranch.setId(0);
-        questionsArray.add(newBranch);
-        questionsList.getItems().add("NY GREN");
+        questionsArray.add(insert, newBranch);
+        questionsList.getItems().add(insert, "NY GREN");
+        questionsList.getSelectionModel().select(insert);
     }
 
     //Behövs denna?
@@ -435,8 +535,9 @@ public class Controller implements Initializable {
         try {
             questionsArray.clear();
             questionsList.getItems().clear();
-
+            Question.setCounter(loadedList.size() + 1);
             loadedList.forEach((q) -> {
+
                 questionsArray.add(q);
                 questionsList.getItems().add(q.toString());
             });
@@ -493,8 +594,10 @@ public class Controller implements Initializable {
         if (!player.isDisabled()) {
 
             if (AQAlert.QuestionGuess(player.getName(), getSelectedQuestion())) {
+                new Sound().Play(correctSound);
                 points = points + getSelectedQuestion().getPointValue();
                 int selectedId = questionsList.getSelectionModel().getSelectedIndex();
+                questionsList.getItems().set(selectedId, questionsList.getSelectionModel().getSelectedItem() + " (Besvarad)");
                 setSelectedQuestion(selectedId + 1);
                 System.out.println("Correct answer, points are now " + points);
                 p1.setDisabled(false);
@@ -532,7 +635,7 @@ public class Controller implements Initializable {
                     styler.setBackgroundColor(p4PointsCounter, "yellow");
                     break;
             }
-
+            new Sound().Play(wrongSound);
             System.out.println("returning " + points);
             player.setPoints(points);
             return points;
@@ -597,4 +700,18 @@ public class Controller implements Initializable {
 
     }
 
+    @FXML
+    public void updateQuestionFired(ActionEvent actionEvent) {
+        questionTextArea.commitValue();
+        try {
+            getSelectedQuestion().setPointValue(Integer.parseInt(pointValue.getText()));
+            getSelectedQuestion().setPenalty(penaltyYes.isSelected());
+            getSelectedQuestion().setTextValue(questionTextArea.getText());
+
+            AQAlert.Alert("Uppdatering", "Uppdateringen av fråga " + getSelectedQuestion().getId() + " lyckades!");
+        } catch (RuntimeException e) {
+            System.out.println("Error in addButtonFired: " + e);
+            AQAlert.ErrorAlert("Hoppsan", "Poäng får inte innehålla text! :)");
+        }
+    }
 }

@@ -1,10 +1,19 @@
 package aq1;
 
 import aq1.Question;
+
 import java.util.Optional;
+
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
+import javax.swing.*;
 
 public class AQAlert {
 
@@ -26,6 +35,7 @@ public class AQAlert {
 
     public static boolean QuestionGuess(String playerName, Question question) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
         alert.setTitle("Gissning!");
         alert.setHeaderText(playerName + " var snabbast!");
 //        alert.setContentText(question.getTextValue() + "\n\nPoängvärde: " + question.getPointValue() + "\n\nRätt svar?");

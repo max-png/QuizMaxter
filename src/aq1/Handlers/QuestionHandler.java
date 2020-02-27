@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class QuestionHandler {
 
     ListView<String> questionsList;
-    static ArrayList<Question> questionsArray = new ArrayList<>();
+    static ArrayList<Question> questionsArray = new ArrayList<>(10);
 
     public ListView<String> getQuestionsList() {
         return questionsList;

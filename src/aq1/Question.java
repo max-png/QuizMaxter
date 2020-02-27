@@ -26,14 +26,12 @@ public class Question {
     private String textValue;
     private int pointValue;
     private boolean penalty;
-    private File sound;
 
-    public Question(String textValue, int pointValue, boolean penalty, File sound) {
+    public Question(String textValue, int pointValue, boolean penalty) {
         this.textValue = textValue;
         this.pointValue = pointValue;
         this.penalty = penalty;
         this.id = counter;
-        this.sound = sound;
         counter++;
     }
 
@@ -59,7 +57,7 @@ public class Question {
     }
 
     public String detailedToString() {
-        return "Question{" + "id=" + id + ", textValue=" + textValue + ", pointValue=" + pointValue + ", penalty=" + penalty + ", sound=" + sound + '}';
+        return "Question{" + "id=" + id + ", textValue=" + textValue + ", pointValue=" + pointValue + ", penalty=" + penalty;
     }
 
 
@@ -69,14 +67,6 @@ public class Question {
 
     public void setPenalty(boolean penalty) {
         this.penalty = penalty;
-    }
-
-    public File getSound() {
-        return sound;
-    }
-
-    public void setSound(File sound) {
-        this.sound = sound;
     }
 
 }

@@ -20,204 +20,294 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#handleKeyReleased" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="aq1.Controller">
+<?import javafx.scene.control.Tooltip?>
+<AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#handleKeyReleased"
+            prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.2"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="aq1.Controller">
     <children>
-        <SplitPane dividerPositions="0.735593220338983, 0.5" layoutX="5.0" layoutY="22.0" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <SplitPane dividerPositions="0.735593220338983, 0.5" layoutX="5.0" layoutY="22.0" orientation="VERTICAL"
+                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                   AnchorPane.topAnchor="0.0">
             <items>
                 <MenuBar>
                     <menus>
                         <Menu mnemonicParsing="false" text="Arkiv">
                             <items>
-                                <MenuItem fx:id="editModeSelector" mnemonicParsing="false" onAction="#editModeSelectorFired" text="Växla till spelläge" />
+                                <MenuItem fx:id="editModeSelector" mnemonicParsing="false"
+                                          onAction="#editModeSelectorFired" text="Växla till spelläge"/>
+                                <MenuItem fx:id="resetGame" mnemonicParsing="=false" onAction="#resetGameFired"
+                                          text="Nytt spel"/>
                             </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
+                        <Menu mnemonicParsing="false" text="Inställningar">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Delete" />
+                                <MenuItem fx:id="correctSoundSelector" onAction="#selectCorrectSoundFired"
+                                          mnemonicParsing="false" text="Välj ljud för rätt svar"/>
+                                <MenuItem fx:id="wrongSoundSelector" onAction="#selectWrongSoundFired"
+                                          mnemonicParsing="false" text="Välj ljud för fel svar"/>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Hjälp">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Om" />
+                                <MenuItem fx:id="guideSelector" onAction="#showGuide" mnemonicParsing="false" text="Guide"/>
                             </items>
                         </Menu>
                     </menus>
                 </MenuBar>
                 <AnchorPane fx:id="Upper" prefHeight="463.0" prefWidth="891.0">
                     <children>
-                        <BorderPane layoutX="34.0" layoutY="46.0" prefHeight="342.0" prefWidth="714.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="335.0" AnchorPane.topAnchor="0.0">
+                        <BorderPane layoutX="34.0" layoutY="46.0" prefHeight="342.0" prefWidth="714.0"
+                                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                    AnchorPane.rightAnchor="335.0" AnchorPane.topAnchor="0.0">
                             <bottom>
-                                <VBox alignment="BOTTOM_LEFT" fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="262.0" spacing="25.0" BorderPane.alignment="TOP_LEFT">
+                                <VBox alignment="BOTTOM_LEFT" fillWidth="false" nodeOrientation="LEFT_TO_RIGHT"
+                                      prefHeight="262.0" spacing="25.0" BorderPane.alignment="TOP_LEFT">
                                     <children>
+                                        <Button fx:id="updateQuestion" focusTraversable="false" mnemonicParsing="false"
+                                                onAction="#updateQuestionFired" prefHeight="25.0" prefWidth="78.0"
+                                                text="Uppdatera">
+                                            <tooltip>
+                                                <Tooltip
+                                                        text="Klicka här för att uppdatera den markerade frågan."></Tooltip>
+                                            </tooltip>
+                                            <HBox.margin>
+                                                <Insets right="15.0"/>
+                                            </HBox.margin>
+                                        </Button>
                                         <HBox alignment="TOP_CENTER">
                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="65.0" text="Poängvärde" />
-                                                <TextField fx:id="pointValue" prefHeight="25.0" prefWidth="78.0" text="1">
+                                                <Label prefHeight="17.0" prefWidth="65.0" text="Poängvärde"/>
+                                                <TextField fx:id="pointValue" prefHeight="25.0" prefWidth="78.0"
+                                                           text="1">
                                                     <HBox.margin>
-                                                        <Insets left="55.0" />
+                                                        <Insets left="55.0"/>
                                                     </HBox.margin>
                                                 </TextField>
                                             </children>
                                         </HBox>
-                                        <HBox>
+                                        <!--                                        <HBox>-->
+                                        <!--                                            <children>-->
+                                        <!--                                                <Label text="Ljudfil:" />-->
+                                        <!--                                                <SplitMenuButton fx:id="soundSampleSelector" disable="false" focusTraversable="false" mnemonicParsing="false" onAction="#selectQuestionSound" text="Bläddra..." HBox.hgrow="ALWAYS">-->
+                                        <!--                                                    <items>-->
+                                        <!--                                                        <MenuItem mnemonicParsing="false" text="Action 1" />-->
+                                        <!--                                                        <MenuItem mnemonicParsing="false" text="Action 2" />-->
+                                        <!--                                                    </items>-->
+                                        <!--                                                    <HBox.margin>-->
+                                        <!--                                                        <Insets left="75.0" />-->
+                                        <!--                                                    </HBox.margin>-->
+                                        <!--                                                </SplitMenuButton>-->
+                                        <!--                                            </children>-->
+                                        <!--                                        </HBox>-->
+                                        <HBox alignment="BASELINE_LEFT" nodeOrientation="LEFT_TO_RIGHT"
+                                              prefHeight="31.0" prefWidth="252.0" spacing="5.0">
                                             <children>
-                                                <Label text="Ljudfil:" />
-                                                <SplitMenuButton fx:id="soundSampleSelector" disable="false" focusTraversable="false" mnemonicParsing="false" onAction="#selectQuestionSound" text="Bläddra..." HBox.hgrow="ALWAYS">
-                                                    <items>
-                                                        <MenuItem mnemonicParsing="false" text="Action 1" />
-                                                        <MenuItem mnemonicParsing="false" text="Action 2" />
-                                                    </items>
+                                                <Label prefHeight="17.0" prefWidth="90.0" text="Straffpoäng?"
+                                                       HBox.hgrow="ALWAYS">
                                                     <HBox.margin>
-                                                        <Insets left="75.0" />
-                                                    </HBox.margin>
-                                                </SplitMenuButton>
-                                            </children>
-                                        </HBox>
-                                        <HBox alignment="BASELINE_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="252.0" spacing="5.0">
-                                            <children>
-                                                <Label prefHeight="17.0" prefWidth="90.0" text="Straffpoäng?" HBox.hgrow="ALWAYS">
-                                                    <HBox.margin>
-                                                        <Insets right="20.0" />
+                                                        <Insets right="20.0"/>
                                                     </HBox.margin>
                                                 </Label>
-                                                <RadioButton fx:id="penaltyNo" focusTraversable="false" mnemonicParsing="false" selected="true" text="Nej!" HBox.hgrow="ALWAYS">
-                                       <toggleGroup>
-                                          <ToggleGroup fx:id="penaltyGroup" />
-                                       </toggleGroup>
+                                                <RadioButton fx:id="penaltyNo" focusTraversable="false"
+                                                             mnemonicParsing="false" selected="true" text="Nej!"
+                                                             HBox.hgrow="ALWAYS">
+                                                    <toggleGroup>
+                                                        <ToggleGroup fx:id="penaltyGroup"/>
+                                                    </toggleGroup>
                                                 </RadioButton>
-                                                <RadioButton fx:id="penaltyYes" focusTraversable="false" mnemonicParsing="false" text="Ja!" toggleGroup="$penaltyGroup" HBox.hgrow="ALWAYS" />
+                                                <RadioButton fx:id="penaltyYes" focusTraversable="false"
+                                                             mnemonicParsing="false" text="Ja!"
+                                                             toggleGroup="$penaltyGroup" HBox.hgrow="ALWAYS"/>
                                             </children>
                                             <VBox.margin>
-                                                <Insets />
+                                                <Insets/>
                                             </VBox.margin>
                                         </HBox>
-                                        <HBox prefHeight="36.0" prefWidth="200.0" />
+                                        <HBox prefHeight="36.0" prefWidth="200.0"/>
                                     </children>
                                     <BorderPane.margin>
-                                        <Insets left="15.0" />
+                                        <Insets left="15.0"/>
                                     </BorderPane.margin>
                                 </VBox>
                             </bottom>
                             <top>
-                                <TextArea fx:id="questionTextArea" prefHeight="210.0" prefWidth="718.0" style="-fx-opacity: 1;">
+                                <TextArea fx:id="questionTextArea" prefHeight="210.0" prefWidth="718.0"
+                                          style="-fx-opacity: 1;">
                                     <BorderPane.margin>
-                                        <Insets left="15.0" />
+                                        <Insets left="15.0"/>
                                     </BorderPane.margin>
                                 </TextArea>
                             </top>
                         </BorderPane>
-                        <VBox fillWidth="false" layoutX="730.0" layoutY="19.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                        <VBox fillWidth="false" layoutX="730.0" layoutY="19.0" AnchorPane.bottomAnchor="15.0"
+                              AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <ListView fx:id="questionsList" editable="true" focusTraversable="false" maxWidth="1.7976931348623157E308" prefHeight="342.0" prefWidth="310.0" VBox.vgrow="ALWAYS">
+                                <ListView fx:id="questionsList" editable="true" focusTraversable="false"
+                                          maxWidth="1.7976931348623157E308" prefHeight="342.0" prefWidth="310.0"
+                                          VBox.vgrow="ALWAYS">
                                     <VBox.margin>
-                                        <Insets />
+                                        <Insets/>
                                     </VBox.margin>
                                 </ListView>
                                 <HBox fx:id="questionsHBox">
                                     <children>
-                                        <Button fx:id="addQuestion" focusTraversable="false" mnemonicParsing="false" onAction="#addButtonFired" prefHeight="25.0" prefWidth="27.0" text="+">
+                                        <Button fx:id="addQuestion" focusTraversable="false" mnemonicParsing="false"
+                                                onAction="#addButtonFired" prefHeight="25.0" prefWidth="27.0" text="+">
+                                            <tooltip>
+                                                <Tooltip
+                                                        text="Lägg till fråga"></Tooltip>
+                                            </tooltip>
                                             <HBox.margin>
-                                                <Insets right="15.0" />
+                                                <Insets right="15.0"/>
                                             </HBox.margin>
                                         </Button>
-                                        <Button fx:id="removeQuestion" disable="false" focusTraversable="false" mnemonicParsing="false" onAction="#removeQuestionFired" prefHeight="25.0" prefWidth="27.0" text="-">
+                                        <Button fx:id="removeQuestion" disable="false" focusTraversable="false"
+                                                mnemonicParsing="false" onAction="#removeQuestionFired"
+                                                prefHeight="25.0" prefWidth="27.0" text="-">
+                                            <tooltip>
+                                                <Tooltip
+                                                        text="Ta bort fråga"></Tooltip>
+                                            </tooltip>
                                             <HBox.margin>
-                                                <Insets right="15.0" />
+                                                <Insets right="15.0"/>
                                             </HBox.margin>
                                         </Button>
-                                        <Button fx:id="addBranch" focusTraversable="false" mnemonicParsing="false" onAction="#addBranchFired" prefHeight="25.0" prefWidth="27.0" text="G" />
-                                        <Button fx:id="saveList" mnemonicParsing="false" onAction="#saveListFired" text="Spara">
+                                        <Button fx:id="addBranch" focusTraversable="false" mnemonicParsing="false"
+                                                onAction="#addBranchFired" prefHeight="25.0" prefWidth="27.0" text="G"/>
+
+                                        <Button fx:id="saveList" mnemonicParsing="false" onAction="#saveListFired"
+                                                text="Spara">
                                             <HBox.margin>
-                                                <Insets left="15.0" />
+                                                <Insets left="15.0"/>
                                             </HBox.margin>
                                         </Button>
-                                        <Button fx:id="loadList" mnemonicParsing="false" onAction="#loadListFired" text="Ladda">
+                                        <Button fx:id="loadList" mnemonicParsing="false" onAction="#loadListFired"
+                                                text="Ladda">
                                             <HBox.margin>
-                                                <Insets left="15.0" />
+                                                <Insets left="15.0"/>
                                             </HBox.margin>
                                         </Button>
                                     </children>
                                     <VBox.margin>
-                                        <Insets left="10.0" top="10.0" />
+                                        <Insets left="10.0" top="10.0"/>
                                     </VBox.margin>
                                 </HBox>
                             </children>
                         </VBox>
                     </children>
                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </padding>
                 </AnchorPane>
-                <AnchorPane fx:id="Lower" maxHeight="205.0" maxWidth="1080.0" minHeight="205.0" minWidth="1080.0" prefHeight="205.0" prefWidth="1080.0" SplitPane.resizableWithParent="false">
+                <AnchorPane fx:id="Lower" maxHeight="205.0" maxWidth="1080.0" minHeight="205.0" minWidth="1080.0"
+                            prefHeight="205.0" prefWidth="1080.0" SplitPane.resizableWithParent="false">
                     <children>
-                        <Group fx:id="p1Field" layoutX="5.0" onMouseEntered="#player1Selected" AnchorPane.topAnchor="10.0">
+                        <Group fx:id="p1Field" layoutX="5.0" onMouseEntered="#player1Selected"
+                               AnchorPane.topAnchor="10.0">
                             <children>
-                                <TextField fx:id="p1Name" focusTraversable="false" onAction="#onEnter" prefHeight="25.0" prefWidth="183.0" text="Spelare 1" />
-                                <Button fx:id="upArrow1" focusTraversable="false" layoutX="113.0" layoutY="29.0" mnemonicParsing="false" onAction="#increasePointsFired" onMouseEntered="#addQuestionFired" prefHeight="50.0" prefWidth="70.0" text="Upp" />
-                                <Button fx:id="downArrow1" contentDisplay="CENTER" focusTraversable="false" layoutX="113.0" layoutY="78.0" mnemonicParsing="false" onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner" />
-                                <TextField fx:id="p1PointsCounter" alignment="CENTER" editable="false" focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0" text="10">
+                                <TextField fx:id="p1Name" focusTraversable="false" onAction="#onEnter" prefHeight="25.0"
+                                           prefWidth="183.0" text="Spelare 1"/>
+                                <Button fx:id="upArrow1" focusTraversable="false" layoutX="113.0" layoutY="29.0"
+                                        mnemonicParsing="false" onAction="#increasePointsFired"
+                                        onMouseEntered="#addQuestionFired" prefHeight="50.0" prefWidth="70.0"
+                                        text="Upp"/>
+                                <Button fx:id="downArrow1" contentDisplay="CENTER" focusTraversable="false"
+                                        layoutX="113.0" layoutY="78.0" mnemonicParsing="false"
+                                        onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner"/>
+                                <TextField fx:id="p1PointsCounter" alignment="CENTER" editable="false"
+                                           focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0"
+                                           text="10">
                                     <font>
-                                        <Font name="System Bold" size="32.0" />
+                                        <Font name="System Bold" size="32.0"/>
                                     </font>
                                 </TextField>
-                                <SplitMenuButton fx:id="p1BuzzerSoundSelector" focusTraversable="false" layoutY="130.0" mnemonicParsing="false" onAction="#selectBuzzerSound" prefHeight="25.0" prefWidth="183.0" text="Välj buzzerljud...">
+                                <SplitMenuButton fx:id="p1BuzzerSoundSelector" focusTraversable="false" layoutY="130.0"
+                                                 mnemonicParsing="false" onAction="#selectBuzzerSound" prefHeight="25.0"
+                                                 prefWidth="183.0" text="Välj buzzerljud...">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="Hej:)" />
-                                        <MenuItem mnemonicParsing="false" text="Bläddra..." />
+                                        <MenuItem mnemonicParsing="false" text="Hej:)"/>
+                                        <MenuItem mnemonicParsing="false" text="Bläddra..."/>
                                     </items>
                                 </SplitMenuButton>
                             </children>
                         </Group>
                         <Group fx:id="p2Field" layoutX="204.0" layoutY="10.0" onMouseEntered="#player2Selected">
                             <children>
-                                <TextField fx:id="p2Name" focusTraversable="false" onAction="#onEnter" prefHeight="25.0" prefWidth="183.0" text="Spelare 2" />
-                                <Button fx:id="upArrow2" focusTraversable="false" layoutX="113.0" layoutY="29.0" mnemonicParsing="false" onAction="#increasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Upp" />
-                                <Button fx:id="downArrow2" contentDisplay="CENTER" focusTraversable="false" layoutX="113.0" layoutY="78.0" mnemonicParsing="false" onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner" />
-                                <TextField fx:id="p2PointsCounter" alignment="CENTER" editable="false" focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0" text="10">
+                                <TextField fx:id="p2Name" focusTraversable="false" onAction="#onEnter" prefHeight="25.0"
+                                           prefWidth="183.0" text="Spelare 2"/>
+                                <Button fx:id="upArrow2" focusTraversable="false" layoutX="113.0" layoutY="29.0"
+                                        mnemonicParsing="false" onAction="#increasePointsFired" prefHeight="50.0"
+                                        prefWidth="70.0" text="Upp"/>
+                                <Button fx:id="downArrow2" contentDisplay="CENTER" focusTraversable="false"
+                                        layoutX="113.0" layoutY="78.0" mnemonicParsing="false"
+                                        onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner"/>
+                                <TextField fx:id="p2PointsCounter" alignment="CENTER" editable="false"
+                                           focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0"
+                                           text="10">
                                     <font>
-                                        <Font name="System Bold" size="32.0" />
+                                        <Font name="System Bold" size="32.0"/>
                                     </font>
                                 </TextField>
-                                <SplitMenuButton fx:id="p2BuzzerSoundSelector" focusTraversable="false" layoutY="130.0" mnemonicParsing="false" onAction="#selectBuzzerSound" prefHeight="25.0" prefWidth="183.0" text="Välj buzzerljud...">
+                                <SplitMenuButton fx:id="p2BuzzerSoundSelector" focusTraversable="false" layoutY="130.0"
+                                                 mnemonicParsing="false" onAction="#selectBuzzerSound" prefHeight="25.0"
+                                                 prefWidth="183.0" text="Välj buzzerljud...">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="Hej:)" />
-                                        <MenuItem mnemonicParsing="false" text="Bläddra..." />
+                                        <MenuItem mnemonicParsing="false" text="Hej:)"/>
+                                        <MenuItem mnemonicParsing="false" text="Bläddra..."/>
                                     </items>
                                 </SplitMenuButton>
                             </children>
                         </Group>
                         <Group fx:id="p3Field" layoutX="406.0" layoutY="10.0" onMouseEntered="#player3Selected">
                             <children>
-                                <TextField fx:id="p3Name" focusTraversable="false" onAction="#onEnter" prefHeight="25.0" prefWidth="183.0" text="Spelare 3" />
-                                <Button fx:id="upArrow3" focusTraversable="false" layoutX="113.0" layoutY="29.0" mnemonicParsing="false" onAction="#increasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Upp" />
-                                <Button fx:id="downArrow3" contentDisplay="CENTER" focusTraversable="false" layoutX="113.0" layoutY="78.0" mnemonicParsing="false" onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner" />
-                                <TextField fx:id="p3PointsCounter" alignment="CENTER" editable="false" focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0" text="10">
+                                <TextField fx:id="p3Name" focusTraversable="false" onAction="#onEnter" prefHeight="25.0"
+                                           prefWidth="183.0" text="Spelare 3"/>
+                                <Button fx:id="upArrow3" focusTraversable="false" layoutX="113.0" layoutY="29.0"
+                                        mnemonicParsing="false" onAction="#increasePointsFired" prefHeight="50.0"
+                                        prefWidth="70.0" text="Upp"/>
+                                <Button fx:id="downArrow3" contentDisplay="CENTER" focusTraversable="false"
+                                        layoutX="113.0" layoutY="78.0" mnemonicParsing="false"
+                                        onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner"/>
+                                <TextField fx:id="p3PointsCounter" alignment="CENTER" editable="false"
+                                           focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0"
+                                           text="10">
                                     <font>
-                                        <Font name="System Bold" size="32.0" />
+                                        <Font name="System Bold" size="32.0"/>
                                     </font>
                                 </TextField>
-                                <SplitMenuButton fx:id="p3BuzzerSoundSelector" focusTraversable="false" layoutY="130.0" mnemonicParsing="false" onAction="#selectBuzzerSound" prefHeight="25.0" prefWidth="183.0" text="Välj buzzerljud...">
+                                <SplitMenuButton fx:id="p3BuzzerSoundSelector" focusTraversable="false" layoutY="130.0"
+                                                 mnemonicParsing="false" onAction="#selectBuzzerSound" prefHeight="25.0"
+                                                 prefWidth="183.0" text="Välj buzzerljud...">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="Hej:)" />
-                                        <MenuItem mnemonicParsing="false" text="Bläddra..." />
+                                        <MenuItem mnemonicParsing="false" text="Hej:)"/>
+                                        <MenuItem mnemonicParsing="false" text="Bläddra..."/>
                                     </items>
                                 </SplitMenuButton>
                             </children>
                         </Group>
                         <Group fx:id="p4Field" layoutX="610.0" layoutY="10.0" onMouseEntered="#player4Selected">
                             <children>
-                                <TextField fx:id="p4Name" focusTraversable="false" onAction="#onEnter" prefHeight="25.0" prefWidth="183.0" text="Spelare 4" />
-                                <Button fx:id="upArrow4" focusTraversable="false" layoutX="113.0" layoutY="29.0" mnemonicParsing="false" onAction="#increasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Upp" />
-                                <Button fx:id="downArrow4" contentDisplay="CENTER" focusTraversable="false" layoutX="113.0" layoutY="78.0" mnemonicParsing="false" onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner" />
-                                <TextField fx:id="p4PointsCounter" alignment="CENTER" editable="false" focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0" text="10">
+                                <TextField fx:id="p4Name" focusTraversable="false" onAction="#onEnter" prefHeight="25.0"
+                                           prefWidth="183.0" text="Spelare 4"/>
+                                <Button fx:id="upArrow4" focusTraversable="false" layoutX="113.0" layoutY="29.0"
+                                        mnemonicParsing="false" onAction="#increasePointsFired" prefHeight="50.0"
+                                        prefWidth="70.0" text="Upp"/>
+                                <Button fx:id="downArrow4" contentDisplay="CENTER" focusTraversable="false"
+                                        layoutX="113.0" layoutY="78.0" mnemonicParsing="false"
+                                        onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner"/>
+                                <TextField fx:id="p4PointsCounter" alignment="CENTER" editable="false"
+                                           focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0"
+                                           text="10">
                                     <font>
-                                        <Font name="System Bold" size="32.0" />
+                                        <Font name="System Bold" size="32.0"/>
                                     </font>
                                 </TextField>
-                                <SplitMenuButton fx:id="p4BuzzerSoundSelector" focusTraversable="false" layoutY="130.0" mnemonicParsing="false" onAction="#selectBuzzerSound" prefHeight="25.0" prefWidth="183.0" text="Välj buzzerljud...">
+                                <SplitMenuButton fx:id="p4BuzzerSoundSelector" focusTraversable="false" layoutY="130.0"
+                                                 mnemonicParsing="false" onAction="#selectBuzzerSound" prefHeight="25.0"
+                                                 prefWidth="183.0" text="Välj buzzerljud...">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="Hej:)" />
-                                        <MenuItem mnemonicParsing="false" text="Bläddra..." />
+                                        <MenuItem mnemonicParsing="false" text="Hej:)"/>
+                                        <MenuItem mnemonicParsing="false" text="Bläddra..."/>
                                     </items>
                                 </SplitMenuButton>
                             </children>
