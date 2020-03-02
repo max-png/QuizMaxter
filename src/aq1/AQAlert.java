@@ -41,8 +41,8 @@ public class AQAlert {
 //        alert.setContentText(question.getTextValue() + "\n\nPoängvärde: " + question.getPointValue() + "\n\nRätt svar?");
         alert.setContentText(question.getTextValue() + "\n\nRätt svar?");
 
-        ButtonType yes = new ButtonType("Ja");
-        ButtonType no = new ButtonType("Nej");
+        ButtonType yes = new ButtonType("Ja", ButtonData.YES);
+        ButtonType no = new ButtonType("Nej", ButtonData.NO);
         ButtonType cancel = new ButtonType("Avbryt", ButtonData.CANCEL_CLOSE);
 
         alert.getButtonTypes().setAll(yes, no, cancel);
@@ -61,6 +61,27 @@ public class AQAlert {
             //Avbröt!
             return false;
         }
+    }
+
+    public static boolean ConfirmationAlert(String title, String message){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText("Var vänlig bekräfta");
+        alert.setContentText(message);
+
+        ButtonType yes = new ButtonType("Ja", ButtonData.YES);
+        ButtonType no = new ButtonType("Nej", ButtonData.NO);
+        ButtonType cancel = new ButtonType("Avbryt", ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(yes,no,cancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get()== yes){
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }

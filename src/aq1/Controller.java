@@ -339,28 +339,30 @@ public class Controller implements Initializable {
 
     @FXML
     private void resetGameFired() {
-        //TODO Städa upp detta.
-        questionsArray.clear();
-        Question.setCounter(1);
-        questionsList.getItems().clear();
-        questionTextArea.clear();
-        p1.setName("Spelare 1");
-        p2.setName("Spelare 2");
-        p3.setName("Spelare 3");
-        p4.setName("Spelare 4");
-        p1.setPoints(0);
-        p2.setPoints(0);
-        p3.setPoints(0);
-        p4.setPoints(0);
-        p1PointsCounter.setText(intToString(0));
-        p2PointsCounter.setText(intToString(0));
-        p3PointsCounter.setText(intToString(0));
-        p4PointsCounter.setText(intToString(0));
+        if (AQAlert.ConfirmationAlert("Nytt spel?", "Vill du verkligen starta en ny omgång?")) {
+            //TODO Städa upp detta.
+            questionsArray.clear();
+            Question.setCounter(1);
+            questionsList.getItems().clear();
+            questionTextArea.clear();
+            p1.setName("Spelare 1");
+            p2.setName("Spelare 2");
+            p3.setName("Spelare 3");
+            p4.setName("Spelare 4");
+            p1.setPoints(0);
+            p2.setPoints(0);
+            p3.setPoints(0);
+            p4.setPoints(0);
+            p1PointsCounter.setText(intToString(0));
+            p2PointsCounter.setText(intToString(0));
+            p3PointsCounter.setText(intToString(0));
+            p4PointsCounter.setText(intToString(0));
 
-        p1Name.setText(p1.getName());
-        p2Name.setText(p2.getName());
-        p3Name.setText(p3.getName());
-        p4Name.setText(p4.getName());
+            p1Name.setText(p1.getName());
+            p2Name.setText(p2.getName());
+            p3Name.setText(p3.getName());
+            p4Name.setText(p4.getName());
+        }
     }
 
     @FXML
@@ -539,7 +541,11 @@ public class Controller implements Initializable {
             loadedList.forEach((q) -> {
 
                 questionsArray.add(q);
-                questionsList.getItems().add(q.toString());
+                if (q.getId() == 0) {
+                    questionsList.getItems().add("NY GREN");
+                } else {
+                    questionsList.getItems().add(q.toString());
+                }
             });
 
         } catch (Exception e) {

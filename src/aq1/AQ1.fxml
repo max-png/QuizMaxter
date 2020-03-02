@@ -152,7 +152,7 @@
                                 <HBox fx:id="questionsHBox">
                                     <children>
                                         <Button fx:id="addQuestion" focusTraversable="false" mnemonicParsing="false"
-                                                onAction="#addButtonFired" prefHeight="25.0" prefWidth="27.0" text="+">
+                                                onAction="#addButtonFired" prefHeight="25.0" prefWidth="40.0" text="+">
                                             <tooltip>
                                                 <Tooltip
                                                         text="Lägg till fråga"></Tooltip>
@@ -163,7 +163,7 @@
                                         </Button>
                                         <Button fx:id="removeQuestion" disable="false" focusTraversable="false"
                                                 mnemonicParsing="false" onAction="#removeQuestionFired"
-                                                prefHeight="25.0" prefWidth="27.0" text="-">
+                                                prefHeight="25.0" prefWidth="40.0" text="-">
                                             <tooltip>
                                                 <Tooltip
                                                         text="Ta bort fråga"></Tooltip>
@@ -173,7 +173,7 @@
                                             </HBox.margin>
                                         </Button>
                                         <Button fx:id="addBranch" focusTraversable="false" mnemonicParsing="false"
-                                                onAction="#addBranchFired" prefHeight="25.0" prefWidth="27.0" text="G"/>
+                                                onAction="#addBranchFired" prefHeight="25.0" prefWidth="40.0" text="G"/>
 
                                         <Button fx:id="saveList" mnemonicParsing="false" onAction="#saveListFired"
                                                 text="Spara">
