@@ -2,22 +2,20 @@ package aq1;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import aq1.Documentation.Texts;
+import aq1.Handlers.FileManager;
 import aq1.Handlers.QuestionHandler;
 import aq1.Sounds.Sound;
-import aq1.Sounds.ReplaceThisOldSoundPlayer;
-import aq1.Sounds.SoundManager;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -152,6 +150,7 @@ public class Controller implements Initializable {
 
     @FXML
     private void handleKeyReleased(KeyEvent event) {
+
         if (!editMode) {
             int id = 0;
             switch (event.getCode()) {
@@ -248,6 +247,20 @@ public class Controller implements Initializable {
                     penaltyNo.selectedProperty().set(true);
                 }
                 pointValue.setText(intToString(selectedQuestionValue));
+
+                if (questionsList.getSelectionModel().getSelectedItem().toString().contains("NY GREN")) {
+                    System.out.println("Setting everyone disabled");
+                    p1.setDisabled(true);
+                    p2.setDisabled(true);
+                    p3.setDisabled(true);
+                    p4.setDisabled(true);
+                } else {
+                    System.out.println("Setting everyone back to normal");
+                    p1.setDisabled(false);
+                    p2.setDisabled(false);
+                    p3.setDisabled(false);
+                    p4.setDisabled(false);
+                }
             }
 
         });
@@ -385,11 +398,6 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private File selectQuestionSound() {
-        return new Sound().loadSound("Fråga " + questionsArray.size());
-    }
-
-    @FXML
     private void selectCorrectSoundFired() {
         Sound sound = new Sound();
         correctSound = sound.loadSound("rätt svar");
@@ -401,6 +409,26 @@ public class Controller implements Initializable {
         Sound sound = new Sound();
         wrongSound = sound.loadSound("fel svar");
         sound.Play(wrongSound);
+    }
+
+    @FXML
+    private void loadSounds(){
+
+    }
+
+    @FXML
+    private void saveSounds() throws IOException{
+        FileManager fm = new FileManager();
+        List<Object> listToSave = new ArrayList<>();
+        listToSave.add(correctSound);
+        listToSave.add(wrongSound);
+        listToSave.add(p1.getBuzzerSound());
+        try {
+            fm.saveList(listToSave);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     //TODO Clean up the code with method calls
@@ -466,6 +494,7 @@ public class Controller implements Initializable {
                 questionsArray.add(newQuestion);
                 questionsList.getSelectionModel().selectLast();
             }
+            pointValue.setText("1");
             questionTextArea.clear();
 
         } catch (Exception e) {
@@ -524,6 +553,7 @@ public class Controller implements Initializable {
         questionsArray.add(insert, newBranch);
         questionsList.getItems().add(insert, "NY GREN");
         questionsList.getSelectionModel().select(insert);
+        pointValue.setText("1");
     }
 
     //Behövs denna?
@@ -534,30 +564,37 @@ public class Controller implements Initializable {
     @FXML
     private void loadListFired(ActionEvent event) throws NullPointerException {
         ArrayList<Question> loadedList = new FileManager().loadList();
-        try {
-            questionsArray.clear();
-            questionsList.getItems().clear();
-            Question.setCounter(loadedList.size() + 1);
-            loadedList.forEach((q) -> {
 
-                questionsArray.add(q);
-                if (q.getId() == 0) {
-                    questionsList.getItems().add("NY GREN");
-                } else {
-                    questionsList.getItems().add(q.toString());
-                }
-            });
+        if (loadedList == null) {
+            return;
+        } else {
 
-        } catch (Exception e) {
-            AQAlert.Alert("Fel", e.toString());
+            try {
+                questionsList.getItems().clear();
+                Question.setCounter(loadedList.size() + 1);
+                loadedList.forEach((q) -> {
+
+                    questionsArray.add(q);
+                    if (q.getId() == 0) {
+                        questionsList.getItems().add("NY GREN");
+                    } else {
+                        questionsList.getItems().add(q.toString());
+                    }
+                });
+
+            } catch (Exception e) {
+                AQAlert.Alert("Fel", e.toString());
+            }
         }
+
     }
 
     @FXML
     private void saveListFired(ActionEvent event) throws IOException {
 //        FileManager.saveList(questionsArray, FXMLLoader.load(getClass().getResource("AQ1.fxml")));
         FileManager fm = new FileManager();
-        fm.saveList(questionsArray);
+        List<Object> listToSave = new ArrayList<>(questionsArray);
+        fm.saveList(listToSave);
     }
 
     private String intToString(int i) {
@@ -599,7 +636,9 @@ public class Controller implements Initializable {
 
         if (!player.isDisabled()) {
 
-            if (AQAlert.QuestionGuess(player.getName(), getSelectedQuestion())) {
+            int result = AQAlert.QuestionGuess(player.getName(), getSelectedQuestion());
+
+            if (result == 1) {
                 new Sound().Play(correctSound);
                 points = points + getSelectedQuestion().getPointValue();
                 int selectedId = questionsList.getSelectionModel().getSelectedIndex();
@@ -616,35 +655,49 @@ public class Controller implements Initializable {
                 styler.setBackgroundColor(p4PointsCounter, "white");
                 player.setPoints(points);
                 return points;
-            } else if (getSelectedQuestion().isPenalty()) {
-                points = points - getSelectedQuestion().getPointValue();
-                System.out.println("Wrong answer, points are now " + points);
-            }
-            //TODO Disable this player until someone guessed right, also put a points counter in each player
-            //TODO Also make sure the guessing player gets yellow.
+            } else if (result == 2) {
+                if (getSelectedQuestion().isPenalty()) {
+                    points = points - getSelectedQuestion().getPointValue();
+                    System.out.println("Wrong answer, points are now " + points);
+                }
 
-            switch (player.getId()) {
-                case 1:
-                    player.setDisabled(true);
-                    styler.setBackgroundColor(p1PointsCounter, "yellow");
-                    break;
-                case 2:
-                    player.setDisabled(true);
-                    styler.setBackgroundColor(p2PointsCounter, "yellow");
-                    break;
-                case 3:
-                    player.setDisabled(true);
-                    styler.setBackgroundColor(p3PointsCounter, "yellow");
-                    break;
-                case 4:
-                    player.setDisabled(true);
-                    styler.setBackgroundColor(p4PointsCounter, "yellow");
-                    break;
+                switch (player.getId()) {
+                    case 1:
+                        player.setDisabled(true);
+                        styler.setBackgroundColor(p1PointsCounter, "yellow");
+                        break;
+                    case 2:
+                        player.setDisabled(true);
+                        styler.setBackgroundColor(p2PointsCounter, "yellow");
+                        break;
+                    case 3:
+                        player.setDisabled(true);
+                        styler.setBackgroundColor(p3PointsCounter, "yellow");
+                        break;
+                    case 4:
+                        player.setDisabled(true);
+                        styler.setBackgroundColor(p4PointsCounter, "yellow");
+                        break;
+                }
+                new Sound().Play(wrongSound);
+                System.out.println("returning " + points);
+                player.setPoints(points);
+                return points;
             }
-            new Sound().Play(wrongSound);
-            System.out.println("returning " + points);
-            player.setPoints(points);
-            return points;
+        }
+        switch (player.getId()) {
+            case 1:
+                styler.setBackgroundColor(p1PointsCounter, "white");
+                break;
+            case 2:
+                styler.setBackgroundColor(p2PointsCounter, "white");
+                break;
+            case 3:
+                styler.setBackgroundColor(p3PointsCounter, "white");
+                break;
+            case 4:
+                styler.setBackgroundColor(p4PointsCounter, "white");
+                break;
         }
         return player.getPoints();
     }
@@ -683,6 +736,7 @@ public class Controller implements Initializable {
 
         switch (playerSelector) {
             case 1:
+
                 int points = p1.getPoints() - 1;
                 p1.setPoints(points);
                 p1PointsCounter.setText(intToString(points));

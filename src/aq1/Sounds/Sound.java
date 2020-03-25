@@ -16,8 +16,6 @@ public class Sound {
     private String name;
     private File path;
 
-    public Sound() {
-    }
 
     public File loadSound(String selector) {
         Stage newStage = new Stage();
@@ -31,10 +29,8 @@ public class Sound {
         if (selectedFile != null) {
             System.out.println("Selected file: " + selectedFile);
             setPath(selectedFile);
-            return selectedFile;
-        } else {
-            return selectedFile;
         }
+            return selectedFile;
     }
 
     public void Play(File path) {

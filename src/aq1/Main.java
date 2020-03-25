@@ -14,7 +14,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("AQ1.fxml"));
 
         Scene scene = new Scene(root);
-        stage.setTitle("QuizMaxter 3000 v.0.1.0.1");
+        stage.setTitle("QuizMaxter 3000 v.0.1.0.2");
 
         Image img = new Image("/icons/icon.png");
 

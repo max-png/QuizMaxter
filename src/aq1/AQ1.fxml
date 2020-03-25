@@ -46,6 +46,12 @@
                                 <MenuItem fx:id="wrongSoundSelector" onAction="#selectWrongSoundFired"
                                           mnemonicParsing="false" text="Välj ljud för fel svar"/>
                             </items>
+                            <items>
+                                <MenuItem fx:id="loadSounds" onAction="#loadSounds"
+                                mnemonicParsing="false" text="Ladda ljud"/>
+                                <MenuItem fx:id="saveSounds" onAction="#saveSounds"
+                                          mnemonicParsing="false" text="Spara ljud"/>
+                            </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Hjälp">
                             <items>
@@ -54,7 +60,7 @@
                         </Menu>
                     </menus>
                 </MenuBar>
-                <AnchorPane fx:id="Upper" prefHeight="463.0" prefWidth="891.0">
+                <AnchorPane fx:id="Upper" prefHeight="463.0" prefWidth="891.0" >
                     <children>
                         <BorderPane layoutX="34.0" layoutY="46.0" prefHeight="342.0" prefWidth="714.0"
                                     AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

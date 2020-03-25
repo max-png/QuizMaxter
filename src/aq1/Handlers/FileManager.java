@@ -1,5 +1,8 @@
-package aq1;
+package aq1.Handlers;
 
+import aq1.AQAlert;
+import aq1.Main;
+import aq1.Question;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -22,7 +25,7 @@ public class FileManager {
 
     Gson gson = new Gson();
 
-    public void saveList(List<Question> list) throws IOException {
+    public void saveList(List<Object> list) throws IOException {
 
         FileChooser fileChooser = new FileChooser();
 
@@ -35,21 +38,25 @@ public class FileManager {
         fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showSaveDialog(saveStage);
+        if (file == null) {
+            return;
+        } else {
 
-        //Write the File
-        try {
-            System.out.println("Writing file.");
-            FileWriter fileWriter;
-            fileWriter = new FileWriter(file);
-            fileWriter.write(gson.toJson(list));
-            fileWriter.close();
+            //Write the File
+            try {
+                System.out.println("Writing file.");
+                FileWriter fileWriter;
+                fileWriter = new FileWriter(file);
+                fileWriter.write(gson.toJson(list));
+                fileWriter.close();
 
-            AQAlert.Alert("Lyckad sparning!", "Sparade " + file.getName() + " till " + file.getAbsolutePath());
+                AQAlert.Alert("Lyckad sparning!", "Sparade " + file.getName() + " till " + file.getAbsolutePath());
 
-        } catch (IOException e) {
-            Logger.getLogger(Main.class
-                    .getName()).log(Level.SEVERE, null, e);
+            } catch (IOException e) {
+                Logger.getLogger(Main.class
+                        .getName()).log(Level.SEVERE, null, e);
 
+            }
         }
     }
 
@@ -63,9 +70,12 @@ public class FileManager {
         try {
             FileReader fileReader;
             fileReader = new FileReader(loadedFile);
-            loadedList = gson.fromJson(fileReader, questionListType);
-            AQAlert.Alert("Lyckad laddning", "Hämtade " + loadedFile.getName() + " från " + loadedFile.getAbsolutePath());
-
+            if (loadedFile == null) {
+                return null;
+            } else {
+                loadedList = gson.fromJson(fileReader, questionListType);
+                AQAlert.Alert("Lyckad laddning", "Hämtade " + loadedFile.getName() + " från " + loadedFile.getAbsolutePath());
+            }
         } catch (Exception e) {
             Logger.getLogger(Main.class
                     .getName()).log(Level.SEVERE, null, e);
@@ -110,7 +120,7 @@ public class FileManager {
         }
     }
 
-    private void saveListFile(List<Question> listToSave){
+    private void saveListFile(List<Question> listToSave) {
 
     }
 
