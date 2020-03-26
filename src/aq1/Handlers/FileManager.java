@@ -25,7 +25,7 @@ public class FileManager {
 
     Gson gson = new Gson();
 
-    public void saveList(List<Object> list) throws IOException {
+    public void saveList(List<Object> list) {
 
         FileChooser fileChooser = new FileChooser();
 
@@ -64,6 +64,30 @@ public class FileManager {
         ArrayList<Question> loadedList;
         File loadedFile = getListFile();
         Type questionListType = new TypeToken<ArrayList<Question>>() {
+        }.getType();
+
+        //Read the File
+        try {
+            FileReader fileReader;
+            fileReader = new FileReader(loadedFile);
+            if (loadedFile == null) {
+                return null;
+            } else {
+                loadedList = gson.fromJson(fileReader, questionListType);
+                AQAlert.Alert("Lyckad laddning", "Hämtade " + loadedFile.getName() + " från " + loadedFile.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            Logger.getLogger(Main.class
+                    .getName()).log(Level.SEVERE, null, e);
+            return null;
+        }
+
+        return loadedList;
+    }
+    public ArrayList<String> loadArray() {
+        ArrayList<String> loadedList;
+        File loadedFile = getListFile();
+        Type questionListType = new TypeToken<ArrayList<String>>() {
         }.getType();
 
         //Read the File

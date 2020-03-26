@@ -15,6 +15,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
@@ -36,67 +37,32 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+
 public class Controller implements Initializable {
 
-    private Label label;
-    @FXML
-    private AnchorPane Upper;
     @FXML
     private TextField pointValue;
     @FXML
-    private SplitMenuButton soundSampleSelector;
-    @FXML
     private ListView<String> questionsList;
-    @FXML
-    private Button addQuestion;
-    @FXML
-    private Button removeQuestion;
-    @FXML
-    private Button addBranch;
-    @FXML
-    private AnchorPane Lower;
-    @FXML
-    private Group p1Field;
     @FXML
     private TextField p1Name;
     @FXML
-    private Button upArrow1;
-    @FXML
-    private Button downArrow1;
-    @FXML
     private TextField p1PointsCounter;
-    @FXML
-    private Group p2Field;
     @FXML
     private SplitMenuButton p1BuzzerSoundSelector;
     @FXML
     private TextField p2Name;
     @FXML
-    private Button upArrow2;
-    @FXML
-    private Button downArrow2;
-    @FXML
     private TextField p2PointsCounter;
     @FXML
     private SplitMenuButton p2BuzzerSoundSelector;
     @FXML
-    private Group p3Field;
-    @FXML
     private TextField p3Name;
-    @FXML
-    private Button upArrow3;
-    @FXML
-    private Button downArrow3;
     @FXML
     private TextField p3PointsCounter;
     @FXML
-    private Group p4Field;
-    @FXML
     private TextField p4Name;
-    @FXML
-    private Button upArrow4;
-    @FXML
-    private Button downArrow4;
     @FXML
     private TextField p4PointsCounter;
     @FXML
@@ -106,24 +72,12 @@ public class Controller implements Initializable {
 
     public static boolean editMode = true;
 
-    //TODO Flyttade denna till QUestionHandler
-//    public static ArrayList<Question> questionsArray = new ArrayList<>();
     public static ArrayList<Question> questionsArray = QuestionHandler.getQuestionsArray();
-
-//Verkar funka att ladda
-
-//    public static SoundManager soundManager = new SoundManager();
 
     public Styler styler = new Styler();
 
     public static File correctSound;
     public static File wrongSound;
-
-
-//    private static int p1Points = 0;
-//    private static int p2Points = 0;
-//    private static int p3Points = 0;
-//    private static int p4Points = 0;
 
     //    static String playerSelector = null;
     static int playerSelector = 0;
@@ -352,7 +306,7 @@ public class Controller implements Initializable {
 
     @FXML
     private void resetGameFired() {
-        if (AQAlert.ConfirmationAlert("Nytt spel?", "Vill du verkligen starta en ny omgång?")) {
+        if (AQAlert.ConfirmationAlert("Nytt spel?", "Starta en ny omgång?")) {
             //TODO Städa upp detta.
             questionsArray.clear();
             Question.setCounter(1);
@@ -413,21 +367,44 @@ public class Controller implements Initializable {
 
     @FXML
     private void loadSounds(){
+//        FileManager fm = new FileManager();
+        ArrayList<String> loadedList = new FileManager().loadArray();
+        System.out.println(loadedList.toString());
+        try {
+            correctSound = new File(loadedList.get(0));
+            wrongSound = new File(loadedList.get(1));
+            p1.setBuzzerSound(new File(loadedList.get(2)));
+            p2.setBuzzerSound(new File(loadedList.get(3)));
+            p3.setBuzzerSound(new File(loadedList.get(4)));
+            p4.setBuzzerSound(new File(loadedList.get(5)));
 
+            p1BuzzerSoundSelector.setText(p1.getBuzzerSound().getName());
+            p2BuzzerSoundSelector.setText(p2.getBuzzerSound().getName());
+            p3BuzzerSoundSelector.setText(p3.getBuzzerSound().getName());
+            p4BuzzerSoundSelector.setText(p4.getBuzzerSound().getName());
+
+        } catch(Exception e){
+            e.printStackTrace();
+            AQAlert.ErrorAlert("Filen hittades inte", "Sökvägen till en av ljudfilerna var fel!");
+        }
     }
 
     @FXML
     private void saveSounds() throws IOException{
         FileManager fm = new FileManager();
         List<Object> listToSave = new ArrayList<>();
-        listToSave.add(correctSound);
-        listToSave.add(wrongSound);
-        listToSave.add(p1.getBuzzerSound());
+        listToSave.add(correctSound.getAbsolutePath());
+        listToSave.add(wrongSound.getAbsolutePath());
+        listToSave.add(p1.getBuzzerSound().getAbsolutePath());
+        listToSave.add(p2.getBuzzerSound().getAbsolutePath());
+        listToSave.add(p3.getBuzzerSound().getAbsolutePath());
+        listToSave.add(p4.getBuzzerSound().getAbsolutePath());
         try {
             fm.saveList(listToSave);
         }
         catch(Exception e){
             e.printStackTrace();
+            AQAlert.ErrorAlert("Ett ljud saknades","Se till så alla ljud är korrekt valda (ljud för korrekt/inkorrekt svar och för alla spelare och försök sen igen.");
         }
     }
 
@@ -758,6 +735,34 @@ public class Controller implements Initializable {
                 break;
         }
 
+    }
+
+    @FXML
+    public void clickP1Test(Event actionEvent){
+        p1.setDisabled(false);
+        styler.setBackgroundColor(p1PointsCounter, "green");
+        p1PointsCounter.setText(intToString(questionGuess(p1)));
+    }
+
+    @FXML
+    public void clickP2Test(Event actionEvent){
+        p2.setDisabled(false);
+        styler.setBackgroundColor(p2PointsCounter, "green");
+        p2PointsCounter.setText(intToString(questionGuess(p2)));
+    }
+
+    @FXML
+    public void clickP3Test(Event actionEvent){
+        p3.setDisabled(false);
+        styler.setBackgroundColor(p3PointsCounter, "green");
+        p3PointsCounter.setText(intToString(questionGuess(p3)));
+    }
+
+    @FXML
+    public void clickP4Test(Event actionEvent){
+        p4.setDisabled(false);
+        styler.setBackgroundColor(p4PointsCounter, "green");
+        p4PointsCounter.setText(intToString(questionGuess(p4)));
     }
 
     @FXML

@@ -31,7 +31,7 @@
             <items>
                 <MenuBar>
                     <menus>
-                        <Menu mnemonicParsing="false" text="Arkiv">
+                        <Menu mnemonicParsing="false" text="Spel">
                             <items>
                                 <MenuItem fx:id="editModeSelector" mnemonicParsing="false"
                                           onAction="#editModeSelectorFired" text="Växla till spelläge"/>
@@ -39,7 +39,7 @@
                                           text="Nytt spel"/>
                             </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Inställningar">
+                        <Menu mnemonicParsing="false" text="Ljud">
                             <items>
                                 <MenuItem fx:id="correctSoundSelector" onAction="#selectCorrectSoundFired"
                                           mnemonicParsing="false" text="Välj ljud för rätt svar"/>
@@ -221,7 +221,7 @@
                                         layoutX="113.0" layoutY="78.0" mnemonicParsing="false"
                                         onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner"/>
                                 <TextField fx:id="p1PointsCounter" alignment="CENTER" editable="false"
-                                           focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0"
+                                           focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0" onMouseClicked="#clickP1Test"
                                            text="10">
                                     <font>
                                         <Font name="System Bold" size="32.0"/>
@@ -247,7 +247,7 @@
                                 <Button fx:id="downArrow2" contentDisplay="CENTER" focusTraversable="false"
                                         layoutX="113.0" layoutY="78.0" mnemonicParsing="false"
                                         onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner"/>
-                                <TextField fx:id="p2PointsCounter" alignment="CENTER" editable="false"
+                                <TextField fx:id="p2PointsCounter" alignment="CENTER" editable="false" onMouseClicked="#clickP2Test"
                                            focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0"
                                            text="10">
                                     <font>
@@ -274,7 +274,7 @@
                                 <Button fx:id="downArrow3" contentDisplay="CENTER" focusTraversable="false"
                                         layoutX="113.0" layoutY="78.0" mnemonicParsing="false"
                                         onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner"/>
-                                <TextField fx:id="p3PointsCounter" alignment="CENTER" editable="false"
+                                <TextField fx:id="p3PointsCounter" alignment="CENTER" editable="false" onMouseClicked="#clickP3Test"
                                            focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0"
                                            text="10">
                                     <font>
@@ -301,7 +301,7 @@
                                 <Button fx:id="downArrow4" contentDisplay="CENTER" focusTraversable="false"
                                         layoutX="113.0" layoutY="78.0" mnemonicParsing="false"
                                         onAction="#decreasePointsFired" prefHeight="50.0" prefWidth="70.0" text="Ner"/>
-                                <TextField fx:id="p4PointsCounter" alignment="CENTER" editable="false"
+                                <TextField fx:id="p4PointsCounter" alignment="CENTER" editable="false" onMouseClicked="#clickP4Test"
                                            focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0"
                                            text="10">
                                     <font>
