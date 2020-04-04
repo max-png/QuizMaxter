@@ -63,6 +63,29 @@ public class AQAlert {
         }
     }
 
+    public static int timeOutGuess(Question question){
+        Alert confAlert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        confAlert.setTitle("Tiden ute!");
+        confAlert.setHeaderText("");
+        confAlert.setContentText(question.getTextValue());
+
+        ButtonType next = new ButtonType("Nästa fråga", ButtonData.YES);
+        ButtonType cancel = new ButtonType("Avbryt", ButtonData.CANCEL_CLOSE);
+
+        confAlert.getButtonTypes().setAll(next, cancel);
+
+        Optional<ButtonType> result = confAlert.showAndWait();
+
+        if (result.get() == next) {
+            return 1;
+        }
+         else {
+            //Avbröt!
+            return 3;
+        }
+    }
+
     public static boolean ConfirmationAlert(String title, String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);

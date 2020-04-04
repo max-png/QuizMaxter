@@ -137,7 +137,7 @@
                                 </VBox>
                             </bottom>
                             <top>
-                                <TextArea fx:id="questionTextArea" prefHeight="210.0" prefWidth="718.0"
+                                <TextArea fx:id="questionTextArea" prefHeight="210.0" prefWidth="718.0" wrapText="true"
                                           style="-fx-opacity: 1;">
                                     <BorderPane.margin>
                                         <Insets left="15.0"/>
@@ -317,6 +317,19 @@
                                     </items>
                                 </SplitMenuButton>
                             </children>
+                        </Group>
+                        <Group fx:id="timeOut" layoutX="910.0">
+                            <TextField fx:id="timeOutBox" alignment="CENTER" editable="false" onMouseClicked="#timeOut"
+                                       focusTraversable="false" layoutY="28.0" prefHeight="100.0" prefWidth="111.0"
+                                       text="Tiden ute">
+                                <font>
+                                    <Font name="System Bold" size="18.0"/>
+                                </font>
+                            </TextField>
+                            <SplitMenuButton fx:id="timeOutSoundSelector" focusTraversable="false" layoutY="130.0"
+                                             mnemonicParsing="false" onAction="#selectTimeOutSound" prefHeight="25.0"
+                                             prefWidth="111.0" text="Välj ljud...">
+                            </SplitMenuButton>
                         </Group>
                     </children>
                 </AnchorPane>

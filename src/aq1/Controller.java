@@ -22,7 +22,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
@@ -32,15 +31,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-
 public class Controller implements Initializable {
-
+    @FXML
+    public TextField timeOutBox;
+    @FXML
+    public Group timeOut;
+    @FXML
+    public SplitMenuButton timeOutSoundSelector;
     @FXML
     private TextField pointValue;
     @FXML
@@ -78,6 +79,7 @@ public class Controller implements Initializable {
 
     public static File correctSound;
     public static File wrongSound;
+    public static File timeOutSound;
 
     //    static String playerSelector = null;
     static int playerSelector = 0;
@@ -193,6 +195,8 @@ public class Controller implements Initializable {
                 final int selectedQuestionValue = questionsArray.get(selectedId).getPointValue();
                 final String selectedStringValue = questionsArray.get(selectedId).getTextValue();
                 final boolean isPenalty = questionsArray.get(selectedId).isPenalty();
+
+                updateQuestion.setText("Uppdatera");
 
                 questionTextArea.setText(selectedStringValue);
                 if (isPenalty) {
@@ -366,7 +370,14 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private void loadSounds(){
+    private void selectTimeOutSound(){
+        Sound sound = new Sound();
+        timeOutSound = sound.loadSound("Time Out");
+        timeOutSoundSelector.setText(timeOutSound.getName());
+    }
+
+    @FXML
+    private void loadSounds() {
 //        FileManager fm = new FileManager();
         ArrayList<String> loadedList = new FileManager().loadArray();
         System.out.println(loadedList.toString());
@@ -383,14 +394,14 @@ public class Controller implements Initializable {
             p3BuzzerSoundSelector.setText(p3.getBuzzerSound().getName());
             p4BuzzerSoundSelector.setText(p4.getBuzzerSound().getName());
 
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             AQAlert.ErrorAlert("Filen hittades inte", "Sökvägen till en av ljudfilerna var fel!");
         }
     }
 
     @FXML
-    private void saveSounds() throws IOException{
+    private void saveSounds() throws IOException {
         FileManager fm = new FileManager();
         List<Object> listToSave = new ArrayList<>();
         listToSave.add(correctSound.getAbsolutePath());
@@ -401,10 +412,9 @@ public class Controller implements Initializable {
         listToSave.add(p4.getBuzzerSound().getAbsolutePath());
         try {
             fm.saveList(listToSave);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            AQAlert.ErrorAlert("Ett ljud saknades","Se till så alla ljud är korrekt valda (ljud för korrekt/inkorrekt svar och för alla spelare och försök sen igen.");
+            AQAlert.ErrorAlert("Ett ljud saknades", "Se till så alla ljud är korrekt valda (ljud för korrekt/inkorrekt svar och för alla spelare och försök sen igen.");
         }
     }
 
@@ -612,9 +622,7 @@ public class Controller implements Initializable {
         System.out.println("Starting points are " + points);
 
         if (!player.isDisabled()) {
-
             int result = AQAlert.QuestionGuess(player.getName(), getSelectedQuestion());
-
             if (result == 1) {
                 new Sound().Play(correctSound);
                 points = points + getSelectedQuestion().getPointValue();
@@ -738,28 +746,28 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void clickP1Test(Event actionEvent){
+    public void clickP1Test(MouseEvent actionEvent) {
         p1.setDisabled(false);
         styler.setBackgroundColor(p1PointsCounter, "green");
         p1PointsCounter.setText(intToString(questionGuess(p1)));
     }
 
     @FXML
-    public void clickP2Test(Event actionEvent){
+    public void clickP2Test(Event actionEvent) {
         p2.setDisabled(false);
         styler.setBackgroundColor(p2PointsCounter, "green");
         p2PointsCounter.setText(intToString(questionGuess(p2)));
     }
 
     @FXML
-    public void clickP3Test(Event actionEvent){
+    public void clickP3Test(Event actionEvent) {
         p3.setDisabled(false);
         styler.setBackgroundColor(p3PointsCounter, "green");
         p3PointsCounter.setText(intToString(questionGuess(p3)));
     }
 
     @FXML
-    public void clickP4Test(Event actionEvent){
+    public void clickP4Test(Event actionEvent) {
         p4.setDisabled(false);
         styler.setBackgroundColor(p4PointsCounter, "green");
         p4PointsCounter.setText(intToString(questionGuess(p4)));
@@ -773,10 +781,59 @@ public class Controller implements Initializable {
             getSelectedQuestion().setPenalty(penaltyYes.isSelected());
             getSelectedQuestion().setTextValue(questionTextArea.getText());
 
-            AQAlert.Alert("Uppdatering", "Uppdateringen av fråga " + getSelectedQuestion().getId() + " lyckades!");
+            updateQuestion.setText("Klart!");
+
         } catch (RuntimeException e) {
             System.out.println("Error in addButtonFired: " + e);
             AQAlert.ErrorAlert("Hoppsan", "Poäng får inte innehålla text! :)");
         }
     }
+
+    @FXML
+    public void timeOut(MouseEvent actionEvent) {
+        disablePlayers(5);
+        new Sound().Play(timeOutSound);
+        int result = AQAlert.timeOutGuess(getSelectedQuestion());
+
+        if (result == 1) {
+            int selectedId = questionsList.getSelectionModel().getSelectedIndex();
+            questionsList.getItems().set(selectedId, questionsList.getSelectionModel().getSelectedItem() + " (Besvarad)");
+            setSelectedQuestion(selectedId + 1);
+        } else if (result == 3) {
+            enablePlayers(5);
+        }
+    }
+
+    public void disablePlayers(int i){
+        if(i==1 || i == 5) {
+            p1.setDisabled(true);
+            styler.setBackgroundColor(p1PointsCounter, "yellow");
+        } if (i==2 || i == 5) {
+            p2.setDisabled(true);
+            styler.setBackgroundColor(p2PointsCounter, "yellow");
+        } if(i==3 || i==5) {
+            p3.setDisabled(true);
+            styler.setBackgroundColor(p3PointsCounter, "yellow");
+        } if(i==4 || i==5) {
+            p4.setDisabled(true);
+            styler.setBackgroundColor(p4PointsCounter, "yellow");
+        }
+    }
+
+    public void enablePlayers(int i){
+        if(i==1 || i == 5) {
+            p1.setDisabled(false);
+            styler.setBackgroundColor(p1PointsCounter, "white");
+        } if (i==2 || i == 5) {
+            p2.setDisabled(false);
+            styler.setBackgroundColor(p2PointsCounter, "white");
+        } if(i==3 || i==5) {
+            p3.setDisabled(false);
+            styler.setBackgroundColor(p3PointsCounter, "white");
+        } if(i==4 || i==5) {
+            p4.setDisabled(false);
+            styler.setBackgroundColor(p4PointsCounter, "white");
+        }
+    }
+
 }

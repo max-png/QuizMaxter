@@ -39,7 +39,7 @@ public class FileManager {
 
         File file = fileChooser.showSaveDialog(saveStage);
         if (file == null) {
-            return;
+            AQAlert.ErrorAlert("null","File cannot be empty.");
         } else {
 
             //Write the File
