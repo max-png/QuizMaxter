@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -370,7 +371,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private void selectTimeOutSound(){
+    private void selectTimeOutSound() {
         Sound sound = new Sound();
         timeOutSound = sound.loadSound("Time Out");
         timeOutSoundSelector.setText(timeOutSound.getName());
@@ -379,24 +380,63 @@ public class Controller implements Initializable {
     @FXML
     private void loadSounds() {
 //        FileManager fm = new FileManager();
-        ArrayList<String> loadedList = new FileManager().loadArray();
-        System.out.println(loadedList.toString());
-        try {
-            correctSound = new File(loadedList.get(0));
-            wrongSound = new File(loadedList.get(1));
-            p1.setBuzzerSound(new File(loadedList.get(2)));
-            p2.setBuzzerSound(new File(loadedList.get(3)));
-            p3.setBuzzerSound(new File(loadedList.get(4)));
-            p4.setBuzzerSound(new File(loadedList.get(5)));
 
-            p1BuzzerSoundSelector.setText(p1.getBuzzerSound().getName());
-            p2BuzzerSoundSelector.setText(p2.getBuzzerSound().getName());
-            p3BuzzerSoundSelector.setText(p3.getBuzzerSound().getName());
-            p4BuzzerSoundSelector.setText(p4.getBuzzerSound().getName());
+        HashMap<String, String> loadedSounds = new FileManager().loadMap();
+
+
+        try {
+            if (loadedSounds.containsKey("correct")) {
+                correctSound = new File(loadedSounds.get("correct"));
+            }
+
+            if (loadedSounds.containsKey("wrong")) {
+                wrongSound = new File(loadedSounds.get("wrong"));
+            }
+
+            if (loadedSounds.containsKey("timeOut")) {
+                timeOutSound = new File(loadedSounds.get("timeOut"));
+                timeOutSoundSelector.setText(timeOutSound.getName());
+            }
+
+            if (loadedSounds.containsKey("p1")) {
+                p1.setBuzzerSound(new File(loadedSounds.get("p1")));
+                p1BuzzerSoundSelector.setText(p1.getBuzzerSound().getName());
+            }
+
+            if (loadedSounds.containsKey("p2")) {
+                p2.setBuzzerSound(new File(loadedSounds.get("p2")));
+                p2BuzzerSoundSelector.setText(p2.getBuzzerSound().getName());
+            }
+
+            if (loadedSounds.containsKey("p3")) {
+                p3.setBuzzerSound(new File(loadedSounds.get("p3")));
+                p3BuzzerSoundSelector.setText(p3.getBuzzerSound().getName());
+            }
+
+            if (loadedSounds.containsKey("p4")) {
+                p4.setBuzzerSound(new File(loadedSounds.get("p4")));
+                p4BuzzerSoundSelector.setText(p4.getBuzzerSound().getName());
+            }
+
+
+//        ArrayList<String> loadedList = new FileManager().loadArray();
+//            correctSound = new File(loadedList.get(0));
+//            wrongSound = new File(loadedList.get(1));
+//            timeOutSound = new File(loadedList.get(2));
+//            p1.setBuzzerSound(new File(loadedList.get(3)));
+//            p2.setBuzzerSound(new File(loadedList.get(4)));
+//            p3.setBuzzerSound(new File(loadedList.get(5)));
+//            p4.setBuzzerSound(new File(loadedList.get(6)));
+//
+//            p1BuzzerSoundSelector.setText(p1.getBuzzerSound().getName());
+//            p2BuzzerSoundSelector.setText(p2.getBuzzerSound().getName());
+//            p3BuzzerSoundSelector.setText(p3.getBuzzerSound().getName());
+//            p4BuzzerSoundSelector.setText(p4.getBuzzerSound().getName());
+//            timeOutSoundSelector.setText(timeOutSound.getName());
 
         } catch (Exception e) {
             e.printStackTrace();
-            AQAlert.ErrorAlert("Filen hittades inte", "Sökvägen till en av ljudfilerna var fel!");
+            AQAlert.ErrorAlert("Exception", e.toString());
         }
     }
 
@@ -404,14 +444,46 @@ public class Controller implements Initializable {
     private void saveSounds() throws IOException {
         FileManager fm = new FileManager();
         List<Object> listToSave = new ArrayList<>();
-        listToSave.add(correctSound.getAbsolutePath());
-        listToSave.add(wrongSound.getAbsolutePath());
-        listToSave.add(p1.getBuzzerSound().getAbsolutePath());
-        listToSave.add(p2.getBuzzerSound().getAbsolutePath());
-        listToSave.add(p3.getBuzzerSound().getAbsolutePath());
-        listToSave.add(p4.getBuzzerSound().getAbsolutePath());
+
+        //Testa hashmap
+        HashMap<String, String> mapToSave = new HashMap<String, String>();
+
+        if (correctSound != null) {
+            mapToSave.put("correct", correctSound.getAbsolutePath());
+        }
+        if (wrongSound != null) {
+            mapToSave.put("wrong", wrongSound.getAbsolutePath());
+        }
+        if (timeOutSound != null) {
+            mapToSave.put("timeOut", timeOutSound.getAbsolutePath());
+        }
+        if (p1.getBuzzerSound() != null) {
+            mapToSave.put("p1", p1.getBuzzerSound().getAbsolutePath());
+        }
+        if (p2.getBuzzerSound() != null) {
+            mapToSave.put("p2", p2.getBuzzerSound().getAbsolutePath());
+        }
+        if (p3.getBuzzerSound() != null) {
+            mapToSave.put("p3", p3.getBuzzerSound().getAbsolutePath());
+        }
+        if (p4.getBuzzerSound() != null) {
+            mapToSave.put("p4", p4.getBuzzerSound().getAbsolutePath());
+        }
+
+//        listToSave.add(correctSound.getAbsolutePath());
+//        listToSave.add(wrongSound.getAbsolutePath());
+//        listToSave.add(timeOutSound.getAbsolutePath());
+//        listToSave.add(p1.getBuzzerSound().getAbsolutePath());
+//        listToSave.add(p2.getBuzzerSound().getAbsolutePath());
+//        listToSave.add(p3.getBuzzerSound().getAbsolutePath());
+//        listToSave.add(p4.getBuzzerSound().getAbsolutePath());
+
         try {
-            fm.saveList(listToSave);
+            if (!mapToSave.isEmpty()) {
+                fm.save(mapToSave);
+            }
+//            fm.saveList(listToSave);
+
         } catch (Exception e) {
             e.printStackTrace();
             AQAlert.ErrorAlert("Ett ljud saknades", "Se till så alla ljud är korrekt valda (ljud för korrekt/inkorrekt svar och för alla spelare och försök sen igen.");
@@ -799,38 +871,43 @@ public class Controller implements Initializable {
             int selectedId = questionsList.getSelectionModel().getSelectedIndex();
             questionsList.getItems().set(selectedId, questionsList.getSelectionModel().getSelectedItem() + " (Besvarad)");
             setSelectedQuestion(selectedId + 1);
-        } else if (result == 3) {
-            enablePlayers(5);
         }
+        enablePlayers(5);
     }
 
-    public void disablePlayers(int i){
-        if(i==1 || i == 5) {
+    public void disablePlayers(int i) {
+        if (i == 1 || i == 5) {
             p1.setDisabled(true);
             styler.setBackgroundColor(p1PointsCounter, "yellow");
-        } if (i==2 || i == 5) {
+        }
+        if (i == 2 || i == 5) {
             p2.setDisabled(true);
             styler.setBackgroundColor(p2PointsCounter, "yellow");
-        } if(i==3 || i==5) {
+        }
+        if (i == 3 || i == 5) {
             p3.setDisabled(true);
             styler.setBackgroundColor(p3PointsCounter, "yellow");
-        } if(i==4 || i==5) {
+        }
+        if (i == 4 || i == 5) {
             p4.setDisabled(true);
             styler.setBackgroundColor(p4PointsCounter, "yellow");
         }
     }
 
-    public void enablePlayers(int i){
-        if(i==1 || i == 5) {
+    public void enablePlayers(int i) {
+        if (i == 1 || i == 5) {
             p1.setDisabled(false);
             styler.setBackgroundColor(p1PointsCounter, "white");
-        } if (i==2 || i == 5) {
+        }
+        if (i == 2 || i == 5) {
             p2.setDisabled(false);
             styler.setBackgroundColor(p2PointsCounter, "white");
-        } if(i==3 || i==5) {
+        }
+        if (i == 3 || i == 5) {
             p3.setDisabled(false);
             styler.setBackgroundColor(p3PointsCounter, "white");
-        } if(i==4 || i==5) {
+        }
+        if (i == 4 || i == 5) {
             p4.setDisabled(false);
             styler.setBackgroundColor(p4PointsCounter, "white");
         }

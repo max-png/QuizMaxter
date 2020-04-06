@@ -6,13 +6,12 @@ import aq1.Question;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,6 +31,40 @@ public class FileManager {
         Stage saveStage = new Stage();
         saveStage.setTitle("Spara lista...");
 //        saveStage.setScene(new Scene(root, 450, 450));
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("json (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showSaveDialog(saveStage);
+        if (file == null) {
+            AQAlert.ErrorAlert("null","File cannot be empty.");
+        } else {
+
+            //Write the File
+            try {
+                System.out.println("Writing file.");
+                FileWriter fileWriter;
+                fileWriter = new FileWriter(file);
+                fileWriter.write(gson.toJson(list));
+                fileWriter.close();
+
+                AQAlert.Alert("Lyckad sparning!", "Sparade " + file.getName() + " till " + file.getAbsolutePath());
+
+            } catch (IOException e) {
+                Logger.getLogger(Main.class
+                        .getName()).log(Level.SEVERE, null, e);
+
+            }
+        }
+    }
+
+    public void save(Object list) {
+
+        FileChooser fileChooser = new FileChooser();
+
+        Stage saveStage = new Stage();
+        saveStage.setTitle("Spara lista...");
 
         //Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("json (*.json)", "*.json");
@@ -84,6 +117,28 @@ public class FileManager {
 
         return loadedList;
     }
+
+    public HashMap<String,String> loadMap(){
+        HashMap<String,String> loadedMap;
+        File loadedFile = getListFile();
+        Type listType = new TypeToken<HashMap<String,String>>(){}.getType();
+
+        try {
+            FileReader fileReader;
+            fileReader = new FileReader(loadedFile);
+            if(loadedFile == null){
+                return null;
+            } else {
+                loadedMap = gson.fromJson(fileReader,listType);
+                AQAlert.Alert("Lyckad laddning","Hämtade!");
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return loadedMap;
+    }
+
     public ArrayList<String> loadArray() {
         ArrayList<String> loadedList;
         File loadedFile = getListFile();
