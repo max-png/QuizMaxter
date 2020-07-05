@@ -112,6 +112,7 @@ public class Controller implements Initializable {
             int id = 0;
             switch (event.getCode()) {
                 case DIGIT1:
+                case NUMPAD1:
                     if (!p1.isDisabled()) {
                         styler.setBackgroundColor(p1PointsCounter, "green");
                         p1.playBuzzerSound();
@@ -119,6 +120,7 @@ public class Controller implements Initializable {
                     }
                     break;
                 case DIGIT2:
+                case NUMPAD2:
                     if (!p2.isDisabled()) {
                         styler.setBackgroundColor(p2PointsCounter, "green");
                         p2.playBuzzerSound();
@@ -126,6 +128,7 @@ public class Controller implements Initializable {
                     }
                     break;
                 case DIGIT3:
+                case NUMPAD3:
                     if (!p3.isDisabled()) {
                         styler.setBackgroundColor(p3PointsCounter, "green");
                         p3.playBuzzerSound();
@@ -133,6 +136,7 @@ public class Controller implements Initializable {
                     }
                     break;
                 case DIGIT4:
+                case NUMPAD4:
                     if (!p4.isDisabled()) {
                         styler.setBackgroundColor(p4PointsCounter, "green");
                         p4.playBuzzerSound();
