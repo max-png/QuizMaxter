@@ -12,7 +12,7 @@ TODO:
 - ~~Se till så frågearrayen töms när den ska, på rätt sätt: CHECK~~
 - ~~Lägg till bekräftelseruta när man startar nytt spel/resettar: CHECK~~
 - ~~Fixa så NY GREN inte blir Fråga 0: CHECK~~
-- ~~Sätta pointvalue till 1 som default: ~~
+- ~~Sätta pointvalue till 1 som default: CHECK~~
 - ~~Om man avbryter svarad fråga ska ingenting hända: CHECK~~
 - ~~Spara och ladda ljud presets: CHECK~~
 - ~~Lägg till knapp för att låsa upp låsta spelare: CHECK~~
