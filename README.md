@@ -2,23 +2,23 @@
 QuizMaxter 3000 is a learning project using Java and JavaFX to build an application to support the use for real-time quiz management.
 
 TODO:
-- ~~Lägg in ljudbläddrare för rätt och fel ljud: CHECK
+- ~~Lägg in ljudbläddrare för rätt och fel ljud: CHECK~~
 - ~~Ta bort funktionen att lägga ljud till frågor: CHECK~~
-- ~~Flytta filechooser till egen klass (så det går att ladda och spara frågorna): CHECK
-- ~~När en ny fråga läggs till, ska den hamna efter den markerade frågan.: CHECK
-- ~~Lägg till uppdateraknapp som uppdaterar den markerade frågan, med den nya datan i fälten: CHECK
-- ~~Lägg till hjälpavsnitt som berättar om hur man använder programmet: CHECK
-- ~~Lägg till en återställknapp som sätter allt som om programmet startat på nytt (kanske under Arkiv?): CHECK
-- ~~Se till så frågearrayen töms när den ska, på rätt sätt: CHECK
-- ~~Lägg till bekräftelseruta när man startar nytt spel/resettar: CHECK
-- ~~Fixa så NY GREN inte blir Fråga 0: CHECK
-- ~~Sätta pointvalue till 1 som default: 
-- ~~Om man avbryter svarad fråga ska ingenting hända: CHECK
-- ~~Spara och ladda ljud presets: CHECK
-- ~~Lägg till knapp för att låsa upp låsta spelare: CHECK
-- ~~Ta bort dialogruta vid uppdaterad fråga, lägg till en mer subtil visuell bekräftelse: CHECK
-- ~~Lägg till "Tiden ute"-knapp: CHECK
-- ~~Fixa automatisk radbrytning i textlådan: CHECK
+- ~~Flytta filechooser till egen klass (så det går att ladda och spara frågorna): CHECK~~
+- ~~När en ny fråga läggs till, ska den hamna efter den markerade frågan.: CHECK~~
+- ~~Lägg till uppdateraknapp som uppdaterar den markerade frågan, med den nya datan i fälten: CHECK~~
+- ~~Lägg till hjälpavsnitt som berättar om hur man använder programmet: CHECK~~
+- ~~Lägg till en återställknapp som sätter allt som om programmet startat på nytt (kanske under Arkiv?): CHECK~~
+- ~~Se till så frågearrayen töms när den ska, på rätt sätt: CHECK~~
+- ~~Lägg till bekräftelseruta när man startar nytt spel/resettar: CHECK~~
+- ~~Fixa så NY GREN inte blir Fråga 0: CHECK~~
+- ~~Sätta pointvalue till 1 som default: ~~
+- ~~Om man avbryter svarad fråga ska ingenting hända: CHECK~~
+- ~~Spara och ladda ljud presets: CHECK~~
+- ~~Lägg till knapp för att låsa upp låsta spelare: CHECK~~
+- ~~Ta bort dialogruta vid uppdaterad fråga, lägg till en mer subtil visuell bekräftelse: CHECK~~
+- ~~Lägg till "Tiden ute"-knapp: CHECK~~
+- ~~Fixa automatisk radbrytning i textlådan: CHECK~~
 
 VIKTIGT:
 - Inaktivera spelarnas möjlighet att svara när NY GREN är markerad.
